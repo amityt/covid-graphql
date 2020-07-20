@@ -28,7 +28,7 @@ const GlobalType = new GraphQLObjectType({
 		NewConfirmed: { type: GraphQLInt },
 		TotalConfirmed: { type: GraphQLInt },
 		NewRecovered: { type: GraphQLInt },
-		TotalConfirmed: { type: GraphQLInt },
+		TotalRecovered: { type: GraphQLInt },
 		NewDeaths: { type: GraphQLInt },
 		TotalDeaths: { type: GraphQLInt },
 	}),
@@ -47,6 +47,12 @@ const CountryData = new GraphQLObjectType({
 	fields: () => ({
 		country: { type: GraphQLString },
 		cases: { type: GraphQLInt },
+		deaths: { type: GraphQLInt },
+		recovered: { type: GraphQLInt },
+		todayCases: { type: GraphQLInt },
+		todayDeaths: { type: GraphQLInt },
+		todayRecovered: { type: GraphQLInt },
+		active: { type: GraphQLInt },
 	}),
 });
 
@@ -68,7 +74,9 @@ const RootQuery = new GraphQLObjectType({
 			},
 			resolve(parent, args) {
 				return axios
-					.get(`https://corona.lmao.ninja/v2/countries/${args.country}`)
+					.get(
+						`https://corona.lmao.ninja/v2/countries/${args.country}?yesterday=true`
+					)
 					.then((res) => res.data);
 			},
 		},
